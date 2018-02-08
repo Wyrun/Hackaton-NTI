@@ -18,17 +18,17 @@ for i in Data:
     elif i[0] == "L":
         people[0] += 1
         DataY.append(float(0.5))
-        DataY.append(float(0))
     else:
         people[1] += 1
+        DataY.append(float(0))
     DataX.append(list(map(lambda x: float(x), list(i[1:]))))
 
 print(people)
-print(DataX)
+#print(DataY)
 
 plt.plot(people)
 plt.ylabel('Psycological Health')
-plt.show()
+#plt.show()
 """
 from sklearn.neural_network import MLPClassifier
 clf = MLPClassifier(solver='lbfgs', activation='relu',
@@ -37,9 +37,10 @@ clf.fit([[0., 1.], [0., 0.]], [1., 0.])
 #clf.predict([['5', '5', '5', '5']])
 clf.predict([['1', '1']])"""
 from sklearn.neural_network import MLPClassifier
-X = [[0., 0.], [1., 1.]]
-y = [0, 1]
+X = [[5.0, 5.0, 5.0, 3.0], [5.0, 5.0, 5.0, 4.0]]
+Y = [1., 1.]
 clf = MLPClassifier(solver='lbfgs', activation='relu',
 hidden_layer_sizes=(4, 8, 4, 4, 4))
 clf.fit(DataX, DataY)
+print("Hekko Workt")
 print(clf.predict([[2., 2., 1., 0.1]]))
