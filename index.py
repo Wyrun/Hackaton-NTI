@@ -21,16 +21,25 @@ for i in Data:
         DataY.append(float(0))
     else:
         people[1] += 1
-    DataX.append(list(i[1:]))
+    DataX.append(list(map(lambda x: float(x), list(i[1:]))))
 
 print(people)
+print(DataX)
 
 plt.plot(people)
 plt.ylabel('Psycological Health')
 plt.show()
-
+"""
 from sklearn.neural_network import MLPClassifier
-clf = MLPClassifier(solver='lbfgs', activation='sigmoid',
+clf = MLPClassifier(solver='lbfgs', activation='relu',
 hidden_layer_sizes=(5, 2), random_state=1)
+clf.fit([[0., 1.], [0., 0.]], [1., 0.])
+#clf.predict([['5', '5', '5', '5']])
+clf.predict([['1', '1']])"""
+from sklearn.neural_network import MLPClassifier
+X = [[0., 0.], [1., 1.]]
+y = [0, 1]
+clf = MLPClassifier(solver='lbfgs', activation='relu',
+hidden_layer_sizes=(4, 8, 4, 4, 4))
 clf.fit(DataX, DataY)
-clf.predict([['5', '5', '5', '5']])
+print(clf.predict([[2., 2., 1., 0.1]]))
