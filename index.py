@@ -37,16 +37,28 @@ hidden_layer_sizes=(5, 2), random_state=1)
 clf.fit([[0., 1.], [0., 0.]], [1., 0.])
 #clf.predict([['5', '5', '5', '5']])
 clf.predict([['1', '1']])"""
+from sklearn import metrics
+
+
+
 from sklearn.cross_validation import train_test_split
-X_train, X_test, Y_train, Y_test = train_test_split(DataX, DataY, test_size=0.2, random_state=42)
-
-
 
 from sklearn.neural_network import MLPClassifier
-X = [[5.0, 5.0, 5.0, 3.0], [5.0, 5.0, 5.0, 4.0]]
-Y = [1., 1.]
-clf = MLPClassifier(solver='lbfgs', activation='relu',
-hidden_layer_sizes=(4, 8, 4, 4, 4))
-clf.fit(X_train, Y_train)
-print("Hekko Workt")
-print(clf.predict([[2., 2., 1., 0.1]]))
+
+expment = 1
+portion = [float(0.3), float(0.1)]
+actFunc = ['identity', 'logistic', 'relu']
+layers = [int(4), int(5), int(6), int(7)]
+for pr in portion:
+    for fun in actFunc:
+        for lay in layers:
+            X_train, X_test, Y_train, Y_test = train_test_split(DataX, DataY, test_size=pr, random_state=42)
+            clf = MLPClassifier(solver='lbfgs', activation=fun,
+            hidden_layer_sizes=(lay, 8))
+            clf.fit(X_train, Y_train)
+            res_clf = clf.predict(X_test)
+            if pr == 0.3:
+                print(expment, lay, fun, "70/30", metrics.accuracy_score(Y_test, res_clf))
+            else:
+                print(expment, lay, fun, "90/10", metrics.accuracy_score(Y_test, res_clf))
+            expment += 1
