@@ -24,11 +24,10 @@ for i in Data:
     DataX.append(list(map(lambda x: float(x), list(i[1:]))))
 
 print(people)
-#print(DataY)
-
-plt.plot(people)
+plt.bar([0, 10, 20], people, [8, 8, 8], align='center')
 plt.ylabel('Psycological Health')
-#plt.line2d.drawstyle('steps')
+plt.show()
+
 plt.show()
 """
 from sklearn.neural_network import MLPClassifier
@@ -49,16 +48,23 @@ expment = 1
 portion = [float(0.3), float(0.1)]
 actFunc = ['identity', 'logistic', 'relu']
 layers = [int(4), int(5), int(6), int(7)]
+result = open("docx.txt", "w")
+ma = ['','','',0]
 for pr in portion:
     for fun in actFunc:
         for lay in layers:
             X_train, X_test, Y_train, Y_test = train_test_split(DataX, DataY, test_size=pr, random_state=42)
             clf = MLPClassifier(solver='lbfgs', activation=fun,
-            hidden_layer_sizes=(lay, 8))
+            hidden_layer_sizes=(lay, 12))
             clf.fit(X_train, Y_train)
             res_clf = clf.predict(X_test)
+            res = metrics.accuracy_score(Y_test, res_clf)
             if pr == 0.3:
-                print(expment, lay, fun, "70/30", metrics.accuracy_score(Y_test, res_clf))
+                result.write(str(expment)+"\t"+str(lay)+"\t"+str(fun)+"\t"+"70/30"+"\t"+str(res))
             else:
-                print(expment, lay, fun, "90/10", metrics.accuracy_score(Y_test, res_clf))
+                result.write(str(expment)+"\t"+str(lay)+"\t"+str(fun)+"\t"+"90/10"+"\t"+str(res))
+            if ma[3] < res:
+                ma = [pr, fun, lay, res]
             expment += 1
+            result.write("\n")
+result.write("Best: "+str(ma))
